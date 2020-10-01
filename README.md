@@ -2,7 +2,9 @@
 
 ## ✏️ About
 
-REST API made with PHP 7.2.5, Symfony 5, Doctrine, NGINX, MYSQL, DDD, SOLID and Hexagonal Architecture.
+REST API for pokemon tournament persistence.
+
+Made with Symfony 5, Doctrine, Docker, NGINX, MySQL, DDD, SOLID and Hexagonal Architecture.
 
 ## ⚙️ Running locally
 
@@ -10,6 +12,34 @@ Install dependencies
 
 ```bash
 composer install
+```
+
+Create database using the local mysql container
+
+```sql
+create database tournament;
+
+use tournament;
+
+create table subscriptions
+(
+	id int auto_increment,
+	name varchar(255) null,
+	cpf varchar(255) null,
+	phone varchar(255) null,
+	email varchar(255) null,
+	favorite_pokemon varchar(255) null,
+	note varchar(255) null,
+	constraint subscriptions_pk
+		primary key (id)
+);
+
+create unique index subscriptions_cpf_uindex
+	on subscriptions (cpf);
+
+create unique index subscriptions_email_uindex
+	on subscriptions (email);
+
 ```
 
 Start server
@@ -25,12 +55,12 @@ docker-compose up
     ├── Tournament
     │   ├── Application
     │   │   ├── Command
-    │   │   ├── Query
     │   │   └── Service
     │   │
     │   ├── Domain
     │   │   ├── Entity
-    │   │   └── Repository
+    │   │   ├── Repository
+    │   │   └── Exception
     │   │
     │   ├── Infrastructure
     │   │   └── Persistence
@@ -41,7 +71,6 @@ docker-compose up
     │   └── Presentation
     │       └── Http
     │           └── Action
-    │               └── ALiveAction.php
     │
     └── Core
         └── Presentation
