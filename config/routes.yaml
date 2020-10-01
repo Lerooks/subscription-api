@@ -14,3 +14,8 @@ find_subscription_by_id:
   methods: GET
   requirements:
     id: '\d+'
+
+create_subscription:
+  path: /api/v1/subscriptions
+  controller: App\Tournament\Presentation\Http\Action\CreateSubscriptionAction
+  methods: POST

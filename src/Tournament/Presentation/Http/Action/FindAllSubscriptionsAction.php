@@ -41,9 +41,9 @@ class FindAllSubscriptionsAction
         try {
             $subscriptions = $this->subscriptionService->findAllSubscriptions();
         } catch (Exception $exception) {
-            return new JsonResponse(['error' => $exception->getMessage()], Response::HTTP_BAD_REQUEST);
+            return new JsonResponse(['error' => $exception->getMessage()], $exception->getCode() ? $exception->getCode() : Response::HTTP_BAD_REQUEST);
         } catch (Throwable $exception) {
-            return new JsonResponse(['error' => $exception->getMessage()], Response::HTTP_BAD_REQUEST);
+            return new JsonResponse(['error' => $exception->getMessage()], $exception->getCode() ? $exception->getCode() : Response::HTTP_BAD_REQUEST);
         }
 
         return new JsonResponse($subscriptions, Response::HTTP_OK);

@@ -4,8 +4,9 @@
 namespace App\Tournament\Application\Service;
 
 
+use App\Tournament\Application\Command\CreateSubscriptionCommand;
 use App\Tournament\Domain\Entity\Subscription;
-use App\Tournament\Domain\Exception\SubscriptionNotFoundException;
+use App\Tournament\Domain\Exception\SubscriptionAlreadyCreatedException;
 use App\Tournament\Domain\Repository\SubscriptionRepository;
 
 /**
@@ -39,16 +40,27 @@ class SubscriptionService
     /**
      * @param int $id
      * @return Subscription|null
-     * @throws SubscriptionNotFoundException
+     * @throws SubscriptionAlreadyCreatedException
      */
     public function findSubscriptionById(int $id)
     {
         $subscription = $this->subscriptionRepository->fromId($id);
 
         if (is_null($subscription)) {
-            throw new SubscriptionNotFoundException();
+            throw new SubscriptionAlreadyCreatedException();
         }
 
         return $subscription;
+    }
+
+    /**
+     * @param CreateSubscriptionCommand $command
+     * @return Subscription
+     */
+    public function createSubscription(CreateSubscriptionCommand $command)
+    {
+        $subscription = new Subscription(null, $command->getName(), $command->getCpf(), $command->getPhone(), $command->getEmail(), $command->getFavoritePokemon(), $command->getNote());
+
+        return $this->subscriptionRepository->save($subscription);
     }
 }

@@ -14,7 +14,7 @@ class Subscription implements JsonSerializable
 {
 
     /**
-     * @var int
+     * @var int|null
      */
     private $id;
 
@@ -50,7 +50,7 @@ class Subscription implements JsonSerializable
 
     /**
      * Subscription constructor.
-     * @param int $id
+     * @param int|null $id
      * @param string $name
      * @param string $cpf
      * @param string $phone
@@ -58,7 +58,7 @@ class Subscription implements JsonSerializable
      * @param string $favoritePokemon
      * @param string $note
      */
-    public function __construct(int $id, string $name, string $cpf, string $phone, string $email, string $favoritePokemon, string $note)
+    public function __construct(?int $id, string $name, string $cpf, string $phone, string $email, string $favoritePokemon, string $note)
     {
         $this->id = $id;
         $this->name = $name;

@@ -5,7 +5,9 @@ namespace App\Tournament\Infrastructure\Persistence\Doctrine\Repository;
 
 
 use App\Tournament\Domain\Entity\Subscription;
+use App\Tournament\Domain\Exception\SubscriptionAlreadyCreatedException;
 use App\Tournament\Domain\Repository\SubscriptionRepository;
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
 
@@ -63,10 +65,18 @@ class DoctrineSubscriptionRepository implements SubscriptionRepository
     /**
      * @param Subscription $subscription
      * @return Subscription
+     * @throws SubscriptionAlreadyCreatedException
      */
     public function save(Subscription $subscription): Subscription
     {
-        // TODO: Implement save() method.
+        try {
+            $this->entityManager->persist($subscription);
+            $this->entityManager->flush();
+        } catch (UniqueConstraintViolationException $exception) {
+            throw new SubscriptionAlreadyCreatedException();
+        }
+
+        return $subscription;
     }
 
     /**

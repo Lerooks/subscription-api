@@ -4,6 +4,7 @@
 namespace App\Tournament\Presentation\Http\Action;
 
 
+use App\Tournament\Application\Command\CreateSubscriptionCommand;
 use App\Tournament\Application\Service\SubscriptionService;
 use Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -12,10 +13,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
 /**
- * Class FindSubscriptionByIdAction
+ * Class CreateSubscriptionAction
  * @package App\Tournament\Presentation\Http\Action
  */
-class FindSubscriptionByIdAction
+class CreateSubscriptionAction
 {
     /**
      * @var SubscriptionService
@@ -23,7 +24,7 @@ class FindSubscriptionByIdAction
     private $subscriptionService;
 
     /**
-     * FindSubscriptionByIdAction constructor.
+     * CreateSubscriptionAction constructor.
      * @param SubscriptionService $subscriptionService
      */
     public function __construct(SubscriptionService $subscriptionService)
@@ -33,20 +34,20 @@ class FindSubscriptionByIdAction
 
     /**
      * @param Request $request
-     * @param int $id
      * @return JsonResponse
      */
-    public function __invoke(Request $request, int $id)
+    public function __invoke(Request $request)
     {
         try {
-            $subscription = $this->subscriptionService->findSubscriptionById($id);
+            $data = json_decode($request->getContent(), true);
+            $command = CreateSubscriptionCommand::fromArray($data);
+            $subscription = $this->subscriptionService->createSubscription($command);
         } catch (Exception $exception) {
             return new JsonResponse(['error' => $exception->getMessage()], $exception->getCode() ? $exception->getCode() : Response::HTTP_BAD_REQUEST);
         } catch (Throwable $exception) {
-            dd($exception);
             return new JsonResponse(['error' => $exception->getMessage()], $exception->getCode() ? $exception->getCode() : Response::HTTP_BAD_REQUEST);
         }
 
-        return new JsonResponse($subscription, Response::HTTP_OK);
+        return new JsonResponse($subscription, Response::HTTP_CREATED);
     }
 }
