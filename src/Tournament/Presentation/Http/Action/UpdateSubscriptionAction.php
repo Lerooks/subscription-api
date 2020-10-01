@@ -13,10 +13,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
 /**
- * Class CreateSubscriptionAction
+ * Class UpdateSubscriptionAction
  * @package App\Tournament\Presentation\Http\Action
  */
-class CreateSubscriptionAction
+class UpdateSubscriptionAction
 {
     /**
      * @var SubscriptionService
@@ -24,7 +24,7 @@ class CreateSubscriptionAction
     private $subscriptionService;
 
     /**
-     * CreateSubscriptionAction constructor.
+     * UpdateSubscriptionAction constructor.
      * @param SubscriptionService $subscriptionService
      */
     public function __construct(SubscriptionService $subscriptionService)
@@ -34,20 +34,21 @@ class CreateSubscriptionAction
 
     /**
      * @param Request $request
+     * @param int $id
      * @return JsonResponse
      */
-    public function __invoke(Request $request)
+    public function __invoke(Request $request, int $id)
     {
         try {
             $data = json_decode($request->getContent(), true);
             $command = UpdateSubscriptionCommand::fromArray($data);
-            $subscription = $this->subscriptionService->createSubscription($command);
+            $subscription = $this->subscriptionService->updateSubscription($command);
         } catch (Exception $exception) {
             return new JsonResponse(['error' => $exception->getMessage()], $exception->getCode() ? $exception->getCode() : Response::HTTP_BAD_REQUEST);
         } catch (Throwable $exception) {
             return new JsonResponse(['error' => $exception->getMessage()], $exception->getCode() ? $exception->getCode() : Response::HTTP_BAD_REQUEST);
         }
 
-        return new JsonResponse($subscription, Response::HTTP_CREATED);
+        return new JsonResponse($subscription, Response::HTTP_OK);
     }
 }

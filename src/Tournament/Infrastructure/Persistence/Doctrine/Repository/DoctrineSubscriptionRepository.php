@@ -82,10 +82,17 @@ class DoctrineSubscriptionRepository implements SubscriptionRepository
     /**
      * @param Subscription $subscription
      * @return Subscription
+     * @throws SubscriptionAlreadyCreatedException
      */
     public function update(Subscription $subscription): Subscription
     {
-        // TODO: Implement update() method.
+        try {
+            $this->entityManager->flush();
+        } catch (UniqueConstraintViolationException $exception) {
+            throw new SubscriptionAlreadyCreatedException();
+        }
+
+        return $subscription;
     }
 
     /**

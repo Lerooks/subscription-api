@@ -43,7 +43,6 @@ class FindSubscriptionByIdAction
         } catch (Exception $exception) {
             return new JsonResponse(['error' => $exception->getMessage()], $exception->getCode() ? $exception->getCode() : Response::HTTP_BAD_REQUEST);
         } catch (Throwable $exception) {
-            dd($exception);
             return new JsonResponse(['error' => $exception->getMessage()], $exception->getCode() ? $exception->getCode() : Response::HTTP_BAD_REQUEST);
         }
 

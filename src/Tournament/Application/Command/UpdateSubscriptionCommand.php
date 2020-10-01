@@ -6,12 +6,18 @@ namespace App\Tournament\Application\Command;
 
 use Webmozart\Assert\Assert;
 
+
 /**
- * Class CreateSubscriptionCommand
+ * Class UpdateSubscriptionCommand
  * @package App\Tournament\Application\Command
  */
-class CreateSubscriptionCommand
+class UpdateSubscriptionCommand
 {
+    /**
+     * @var int
+     */
+    private $id;
+
     /**
      * @var string
      */
@@ -32,7 +38,7 @@ class CreateSubscriptionCommand
      */
     private $email;
 
-    /**
+    /**q
      * @var string
      */
     private $favoritePokemon;
@@ -43,7 +49,8 @@ class CreateSubscriptionCommand
     private $note;
 
     /**
-     * CreateSubscriptionCommand constructor.
+     * UpdateSubscriptionCommand constructor.
+     * @param int $id
      * @param string $name
      * @param string $cpf
      * @param string $phone
@@ -51,8 +58,9 @@ class CreateSubscriptionCommand
      * @param string $favoritePokemon
      * @param string $note
      */
-    public function __construct(string $name, string $cpf, string $phone, string $email, string $favoritePokemon, string $note)
+    public function __construct(int $id, string $name, string $cpf, string $phone, string $email, string $favoritePokemon, string $note)
     {
+        $this->id = $id;
         $this->name = $name;
         $this->cpf = $cpf;
         $this->phone = $phone;
@@ -67,6 +75,7 @@ class CreateSubscriptionCommand
      */
     public static function fromArray(array $data): UpdateSubscriptionCommand
     {
+        Assert::keyExists($data, 'id', 'Field "id" is required.');
         Assert::keyExists($data, 'name', 'Field "name" is required.');
         Assert::keyExists($data, 'cpf', 'Field "cpf" is required.');
         Assert::keyExists($data, 'phone', 'Field "phone" is required.');
@@ -74,6 +83,7 @@ class CreateSubscriptionCommand
         Assert::keyExists($data, 'favoritePokemon', 'Field "favoritePokemon" is required.');
         Assert::keyExists($data, 'note', 'Field "note" is required.');
 
+        Assert::integerish($data['id'], 'Field "id" is not an integer.');
         Assert::string($data['name'], 'Field "name" is not a string.');
         Assert::string($data['cpf'], 'Field "cpf" is not a string.');
         Assert::string($data['phone'], 'Field "phone" is not a string.');
@@ -82,6 +92,7 @@ class CreateSubscriptionCommand
         Assert::string($data['note'], 'Field "note" is not a string.');
 
         return new self(
+            $data['id'],
             $data['name'],
             $data['cpf'],
             $data['phone'],
@@ -92,10 +103,25 @@ class CreateSubscriptionCommand
     }
 
     /**
+     * @return int
+     */
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param int $id
+     */
+    public function setId(int $id): void
+    {
+        $this->id = $id;
+    }
+
+    /**
      * @return string
      */
-    public
-    function getName(): string
+    public function getName(): string
     {
         return $this->name;
     }
@@ -103,8 +129,7 @@ class CreateSubscriptionCommand
     /**
      * @param string $name
      */
-    public
-    function setName(string $name): void
+    public function setName(string $name): void
     {
         $this->name = $name;
     }
@@ -112,8 +137,7 @@ class CreateSubscriptionCommand
     /**
      * @return string
      */
-    public
-    function getCpf(): string
+    public function getCpf(): string
     {
         return $this->cpf;
     }
@@ -121,8 +145,7 @@ class CreateSubscriptionCommand
     /**
      * @param string $cpf
      */
-    public
-    function setCpf(string $cpf): void
+    public function setCpf(string $cpf): void
     {
         $this->cpf = $cpf;
     }
@@ -130,8 +153,7 @@ class CreateSubscriptionCommand
     /**
      * @return string
      */
-    public
-    function getPhone(): string
+    public function getPhone(): string
     {
         return $this->phone;
     }
@@ -139,8 +161,7 @@ class CreateSubscriptionCommand
     /**
      * @param string $phone
      */
-    public
-    function setPhone(string $phone): void
+    public function setPhone(string $phone): void
     {
         $this->phone = $phone;
     }
@@ -148,8 +169,7 @@ class CreateSubscriptionCommand
     /**
      * @return string
      */
-    public
-    function getEmail(): string
+    public function getEmail(): string
     {
         return $this->email;
     }
@@ -157,8 +177,7 @@ class CreateSubscriptionCommand
     /**
      * @param string $email
      */
-    public
-    function setEmail(string $email): void
+    public function setEmail(string $email): void
     {
         $this->email = $email;
     }
@@ -166,8 +185,7 @@ class CreateSubscriptionCommand
     /**
      * @return string
      */
-    public
-    function getFavoritePokemon(): string
+    public function getFavoritePokemon(): string
     {
         return $this->favoritePokemon;
     }
@@ -175,8 +193,7 @@ class CreateSubscriptionCommand
     /**
      * @param string $favoritePokemon
      */
-    public
-    function setFavoritePokemon(string $favoritePokemon): void
+    public function setFavoritePokemon(string $favoritePokemon): void
     {
         $this->favoritePokemon = $favoritePokemon;
     }
@@ -184,8 +201,7 @@ class CreateSubscriptionCommand
     /**
      * @return string
      */
-    public
-    function getNote(): string
+    public function getNote(): string
     {
         return $this->note;
     }
@@ -193,8 +209,7 @@ class CreateSubscriptionCommand
     /**
      * @param string $note
      */
-    public
-    function setNote(string $note): void
+    public function setNote(string $note): void
     {
         $this->note = $note;
     }

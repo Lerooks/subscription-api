@@ -19,3 +19,10 @@ create_subscription:
   path: /api/v1/subscriptions
   controller: App\Tournament\Presentation\Http\Action\CreateSubscriptionAction
   methods: POST
+
+update_subscription:
+  path: /api/v1/subscriptions/{id}
+  controller: App\Tournament\Presentation\Http\Action\UpdateSubscriptionAction
+  methods: PUT
+  requirements:
+    id: '\d+'

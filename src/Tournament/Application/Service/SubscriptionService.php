@@ -4,9 +4,10 @@
 namespace App\Tournament\Application\Service;
 
 
-use App\Tournament\Application\Command\CreateSubscriptionCommand;
+use App\Tournament\Application\Command\UpdateSubscriptionCommand;
 use App\Tournament\Domain\Entity\Subscription;
 use App\Tournament\Domain\Exception\SubscriptionAlreadyCreatedException;
+use App\Tournament\Domain\Exception\SubscriptionNotFoundException;
 use App\Tournament\Domain\Repository\SubscriptionRepository;
 
 /**
@@ -38,29 +39,52 @@ class SubscriptionService
     }
 
     /**
+     * @param UpdateSubscriptionCommand $command
+     * @return Subscription
+     */
+    public function createSubscription(UpdateSubscriptionCommand $command)
+    {
+        $subscription = new Subscription(null, $command->getName(), $command->getCpf(), $command->getPhone(), $command->getEmail(), $command->getFavoritePokemon(), $command->getNote());
+
+        return $this->subscriptionRepository->save($subscription);
+    }
+
+    /**
+     * @param UpdateSubscriptionCommand $command
+     * @return Subscription
+     * @throws SubscriptionNotFoundException
+     */
+    public function updateSubscription(UpdateSubscriptionCommand $command)
+    {
+        $subscription = $this->subscriptionRepository->fromId($command->getId());
+
+        if (is_null($subscription)) {
+            throw new SubscriptionNotFoundException();
+        }
+
+        $subscription->setName($command->getName());
+        $subscription->setCpf($command->getCpf());
+        $subscription->setPhone($command->getPhone());
+        $subscription->setEmail($command->getEmail());
+        $subscription->setFavoritePokemon($command->getFavoritePokemon());
+        $subscription->setNote($command->getNote());
+
+        return $this->subscriptionRepository->update($subscription);
+    }
+
+    /**
      * @param int $id
      * @return Subscription|null
-     * @throws SubscriptionAlreadyCreatedException
+     * @throws SubscriptionNotFoundException
      */
     public function findSubscriptionById(int $id)
     {
         $subscription = $this->subscriptionRepository->fromId($id);
 
         if (is_null($subscription)) {
-            throw new SubscriptionAlreadyCreatedException();
+            throw new SubscriptionNotFoundException();
         }
 
         return $subscription;
-    }
-
-    /**
-     * @param CreateSubscriptionCommand $command
-     * @return Subscription
-     */
-    public function createSubscription(CreateSubscriptionCommand $command)
-    {
-        $subscription = new Subscription(null, $command->getName(), $command->getCpf(), $command->getPhone(), $command->getEmail(), $command->getFavoritePokemon(), $command->getNote());
-
-        return $this->subscriptionRepository->save($subscription);
     }
 }
