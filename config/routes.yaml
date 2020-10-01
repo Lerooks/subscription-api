@@ -1,0 +1,4 @@
+alive:
+  path: /alive
+  controller: App\Core\Presentation\Http\Action\AliveAction
+  methods: GET

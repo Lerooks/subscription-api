@@ -1,0 +1,46 @@
+version: "3.2"
+services:
+  php:
+    build:
+      context: .
+      dockerfile: environment/php-7/Dockerfile
+    image: digitalocean.com/php
+    restart: unless-stopped
+    tty: true
+    working_dir: /var/www
+    volumes:
+      - ./:/var/www
+      - ./environment/php-7/local.ini:/usr/local/etc/php/conf.d/local.ini
+  nginx:
+    image: nginx:latest
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "8080:80"
+      - "443:443"
+    volumes:
+      - ./:/var/www
+      - ./environment/nginx/app.conf:/etc/nginx/conf.d/default.conf
+  mysql:
+    image: mysql:5.7
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=password
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./environment/mysql/my.cnf:/etc/mysql/my.cnf
+#  phpmyadmin:
+#    image: phpmyadmin/phpmyadmin
+#    container_name: phpmyadmin
+#    environment:
+#      - PMA_ARBITRARY=1
+#    restart: always
+#    ports:
+#      - 8080:80
+#    volumes:
+#      - /sessions
+volumes:
+  mysql_data:
+    driver: local
