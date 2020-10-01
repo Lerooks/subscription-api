@@ -26,3 +26,10 @@ update_subscription:
   methods: PUT
   requirements:
     id: '\d+'
+
+destroy_subscription:
+  path: /api/v1/subscriptions/{id}
+  controller: App\Tournament\Presentation\Http\Action\DestroySubscriptionAction
+  methods: DELETE
+  requirements:
+    id: '\d+'

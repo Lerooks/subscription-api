@@ -87,4 +87,19 @@ class SubscriptionService
 
         return $subscription;
     }
+
+    /**
+     * @param int $id
+     * @throws SubscriptionNotFoundException
+     */
+    public function destroySubscription(int $id)
+    {
+        $subscription = $this->subscriptionRepository->fromId($id);
+
+        if (is_null($subscription)) {
+            throw new SubscriptionNotFoundException();
+        }
+
+        $this->subscriptionRepository->delete($subscription);
+    }
 }

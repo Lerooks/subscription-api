@@ -100,6 +100,7 @@ class DoctrineSubscriptionRepository implements SubscriptionRepository
      */
     public function delete(Subscription $subscription): void
     {
-        // TODO: Implement delete() method.
+        $this->entityManager->remove($subscription);
+        $this->entityManager->flush();
     }
 }
