@@ -7,3 +7,10 @@ find_all_subscriptions:
   path: /api/v1/subscriptions
   controller: App\Tournament\Presentation\Http\Action\FindAllSubscriptionsAction
   methods: GET
+
+find_subscription_by_id:
+  path: /api/v1/subscriptions/{id}
+  controller: App\Tournament\Presentation\Http\Action\FindSubscriptionByIdAction
+  methods: GET
+  requirements:
+    id: '\d+'

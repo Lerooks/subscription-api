@@ -7,6 +7,7 @@ namespace App\Tournament\Infrastructure\Persistence\Doctrine\Repository;
 use App\Tournament\Domain\Entity\Subscription;
 use App\Tournament\Domain\Repository\SubscriptionRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\NonUniqueResultException;
 
 /**
  * Class DoctrineSubscriptionRepository
@@ -32,10 +33,18 @@ class DoctrineSubscriptionRepository implements SubscriptionRepository
     /**
      * @param int $id
      * @return Subscription|null
+     * @throws NonUniqueResultException
      */
     public function fromId(int $id): ?Subscription
     {
-        // TODO: Implement fromId() method.
+        return $this->entityManager
+            ->createQueryBuilder()
+            ->select('s')
+            ->from('Tournament:Subscription', 's')
+            ->where('s.id = :id')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getOneOrNullResult();
     }
 
     /**
