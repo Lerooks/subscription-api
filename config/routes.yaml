@@ -2,3 +2,8 @@ alive:
   path: /alive
   controller: App\Core\Presentation\Http\Action\AliveAction
   methods: GET
+
+find_all_subscriptions:
+  path: /api/v1/subscriptions
+  controller: App\Tournament\Presentation\Http\Action\FindAllSubscriptionsAction
+  methods: GET

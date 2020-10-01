@@ -6,6 +6,7 @@ namespace App\Tournament\Infrastructure\Persistence\Doctrine\Repository;
 
 use App\Tournament\Domain\Entity\Subscription;
 use App\Tournament\Domain\Repository\SubscriptionRepository;
+use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * Class DoctrineSubscriptionRepository
@@ -13,6 +14,20 @@ use App\Tournament\Domain\Repository\SubscriptionRepository;
  */
 class DoctrineSubscriptionRepository implements SubscriptionRepository
 {
+
+    /**
+     * @var EntityManagerInterface
+     */
+    private $entityManager;
+
+    /**
+     * DoctrineSubscriptionRepository constructor.
+     * @param EntityManagerInterface $entityManager
+     */
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
 
     /**
      * @param int $id
@@ -24,11 +39,16 @@ class DoctrineSubscriptionRepository implements SubscriptionRepository
     }
 
     /**
-     * @return array
+     * @return Subscription[]
      */
     public function findAll(): array
     {
-        // TODO: Implement findAll() method.
+        return $this->entityManager
+            ->createQueryBuilder()
+            ->select('s')
+            ->from('Tournament:Subscription', 's')
+            ->getQuery()
+            ->getResult();
     }
 
     /**

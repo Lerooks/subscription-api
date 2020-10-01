@@ -10,7 +10,7 @@
         <field name="cpf" column="cpf" type="string" unique="true"/>
         <field name="phone" column="phone" type="string"/>
         <field name="email" column="email" type="string"/>
-        <field name="favorite_pokemon" column="favorite_pokemon" type="string"/>
+        <field name="favoritePokemon" column="favorite_pokemon" type="string"/>
         <field name="note" column="note" type="string"/>
     </entity>
 </doctrine-mapping>
