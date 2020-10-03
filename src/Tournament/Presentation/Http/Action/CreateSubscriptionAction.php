@@ -4,6 +4,7 @@
 namespace App\Tournament\Presentation\Http\Action;
 
 
+use App\Tournament\Application\Command\CreateSubscriptionCommand;
 use App\Tournament\Application\Command\UpdateSubscriptionCommand;
 use App\Tournament\Application\Service\SubscriptionService;
 use Exception;
@@ -40,7 +41,7 @@ class CreateSubscriptionAction
     {
         try {
             $data = json_decode($request->getContent(), true);
-            $command = UpdateSubscriptionCommand::fromArray($data);
+            $command = CreateSubscriptionCommand::fromArray($data);
             $subscription = $this->subscriptionService->createSubscription($command);
         } catch (Exception $exception) {
             return new JsonResponse(['error' => $exception->getMessage()], $exception->getCode() ? $exception->getCode() : Response::HTTP_BAD_REQUEST);

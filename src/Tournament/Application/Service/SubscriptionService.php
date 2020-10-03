@@ -4,6 +4,7 @@
 namespace App\Tournament\Application\Service;
 
 
+use App\Tournament\Application\Command\CreateSubscriptionCommand;
 use App\Tournament\Application\Command\UpdateSubscriptionCommand;
 use App\Tournament\Domain\Entity\Subscription;
 use App\Tournament\Domain\Exception\SubscriptionAlreadyCreatedException;
@@ -39,10 +40,10 @@ class SubscriptionService
     }
 
     /**
-     * @param UpdateSubscriptionCommand $command
+     * @param CreateSubscriptionCommand $command
      * @return Subscription
      */
-    public function createSubscription(UpdateSubscriptionCommand $command)
+    public function createSubscription(CreateSubscriptionCommand $command)
     {
         $subscription = new Subscription(null, $command->getName(), $command->getCpf(), $command->getPhone(), $command->getEmail(), $command->getFavoritePokemon(), $command->getNote());
 
