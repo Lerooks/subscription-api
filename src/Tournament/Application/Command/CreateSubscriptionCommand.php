@@ -63,9 +63,9 @@ class CreateSubscriptionCommand
 
     /**
      * @param array $data
-     * @return UpdateSubscriptionCommand
+     * @return CreateSubscriptionCommand
      */
-    public static function fromArray(array $data): UpdateSubscriptionCommand
+    public static function fromArray(array $data): CreateSubscriptionCommand
     {
         Assert::keyExists($data, 'name', 'Field "name" is required.');
         Assert::keyExists($data, 'cpf', 'Field "cpf" is required.');
@@ -79,7 +79,7 @@ class CreateSubscriptionCommand
         Assert::string($data['phone'], 'Field "phone" is not a string.');
         Assert::string($data['email'], 'Field "email" is not a string.');
         Assert::string($data['favoritePokemon'], 'Field "favoritePokemon" is not a string.');
-        Assert::string($data['note'], 'Field "note" is not a string.');
+        Assert::nullOrString($data['note'], 'Field "note" is not a string.');
 
         return new self(
             $data['name'],

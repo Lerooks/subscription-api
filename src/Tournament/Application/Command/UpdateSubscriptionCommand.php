@@ -89,7 +89,7 @@ class UpdateSubscriptionCommand
         Assert::string($data['phone'], 'Field "phone" is not a string.');
         Assert::string($data['email'], 'Field "email" is not a string.');
         Assert::string($data['favoritePokemon'], 'Field "favoritePokemon" is not a string.');
-        Assert::string($data['note'], 'Field "note" is not a string.');
+        Assert::nullOrString($data['note'], 'Field "note" is not a string.');
 
         return new self(
             $data['id'],
